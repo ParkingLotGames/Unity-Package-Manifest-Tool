@@ -1,10 +1,10 @@
 {
   "name": "com.parkinglotgames.packagemanifesttool",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "displayName": "Package Manifest Tool",
   "description": "An editor tool to create and modify JSON files for your Unity Packages.",
-  "unity": "2022.2",
-  "unityRelease": "2f1",
+  "unity": "2018.2",
+  "unityRelease": "21f1",
   "documentationUrl": "https://github.com/ParkingLotGames/Unity-Package-Manifest-Tool/",
   "changelogUrl": "https://https://github.com/ParkingLotGames/Unity-Package-Manifest-Tool/releases",
   "licensesUrl": "https://github.com/ParkingLotGames/Unity-Package-Manifest-Tool/",
