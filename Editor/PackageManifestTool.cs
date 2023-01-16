@@ -65,7 +65,7 @@ public class CreateJsonFile
 #if UNITY_2022_2_OR_NEWER
         string jsonString = JsonConvert.SerializeObject(jsonData, Formatting.Indented);
 #endif
-        string filePath = EditorUtility.SaveFilePanel("Save JSON File", "Assets", "NewJsonFile.json", "json");
+        string filePath = EditorUtility.SaveFilePanel("Save package.json", "Assets", "package.json", "json");
         File.WriteAllText(filePath, jsonString);
         AssetDatabase.Refresh();
     }
