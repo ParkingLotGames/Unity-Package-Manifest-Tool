@@ -19,15 +19,16 @@ public class JsonData
     public string changelogUrl;
     public string licensesUrl;
     public string[] keywords;
-    public Author author;
+#if UNITY_2022_1_OR_NEWER
     public Dictionary<string, string> dependencies;
-
+    public Author author;
     public class Author
     {
         public string name;
         public string email;
         public string url;
     }
+#endif
 }
 
 public class CreateJsonFile
@@ -46,16 +47,18 @@ public class CreateJsonFile
             documentationUrl = "https://example.com/",
             changelogUrl = "https://example.com/changelog.html",
             licensesUrl = "https://example.com/licensing.html",
-            dependencies = new Dictionary<string, string>(),
             keywords = new string[] { "keyword1", "keyword2", "keyword3" },
+#if UNITY_2022_1_OR_NEWER
+            dependencies = new Dictionary<string, string>(),
             author = new JsonData.Author()
             {
                 name = "Unity",
                 email = "unity@example.com",
                 url = "https://www.unity3d.com"
             }
+#endif
         };
-#if UNITY_2018_1_OR_NEWER
+#if UNITY_2018_1_OR_NEWER && !UNITY_2022
         string jsonString = JsonUtility.ToJson(jsonData, true);
 #endif
 
@@ -94,7 +97,7 @@ public class JsonEditorUtility : EditorWindow
         {
             jsonFilePath = EditorUtility.OpenFilePanel("Select JSON File", "", "json");
 
-#if UNITY_2018_1_OR_NEWER
+#if UNITY_2018_1_OR_NEWER && !UNITY_2022
             jsonData = JsonUtility.FromJson<JsonData>(File.ReadAllText(jsonFilePath));
 #endif
 
@@ -116,6 +119,8 @@ public class JsonEditorUtility : EditorWindow
             jsonData.changelogUrl = EditorGUILayout.TextField("Changelog URL", jsonData.changelogUrl);
             jsonData.licensesUrl = EditorGUILayout.TextField("Licensing URL", jsonData.licensesUrl);
 
+#if UNITY_2022_1_OR_NEWER
+
             EditorGUILayout.LabelField("Dependencies");
             // Add a new dependency button
             if (GUILayout.Button("Add Dependency"))
@@ -132,18 +137,18 @@ public class JsonEditorUtility : EditorWindow
                 dependenciesValue[i] = EditorGUILayout.TextField("Version", dependenciesValue[i]);
                 GUILayout.EndHorizontal();
             }
-
+#endif
             EditorGUILayout.LabelField("Keywords");
             for (int i = 0; i < jsonData.keywords.Length; i++)
             {
                 jsonData.keywords[i] = EditorGUILayout.TextField("Keyword " + (i + 1), jsonData.keywords[i]);
             }
-
+#if UNITY_2022_1_OR_NEWER
             EditorGUILayout.LabelField("Author");
             jsonData.author.name = EditorGUILayout.TextField("Name", jsonData.author.name);
             jsonData.author.email = EditorGUILayout.TextField("Email", jsonData.author.email);
             jsonData.author.url = EditorGUILayout.TextField("URL", jsonData.author.url);
-
+#endif
             if (GUILayout.Button("Save JSON"))
             {
                 SaveJson();
@@ -154,7 +159,7 @@ public class JsonEditorUtility : EditorWindow
     private void LoadJson()
     {
         string jsonString = File.ReadAllText(jsonFilePath);
-#if UNITY_2018_1_OR_NEWER
+#if UNITY_2018_1_OR_NEWER && !UNITY_2022
         jsonData = JsonUtility.FromJson<JsonData>(File.ReadAllText(jsonString));
 #endif
 
@@ -170,18 +175,21 @@ public class JsonEditorUtility : EditorWindow
 
     private void SaveJson()
     {
-            // Clear existing dependencies
-            jsonData.dependencies.Clear();
+#if UNITY_2022_1_OR_NEWER
 
-            // Add new dependencies to jsonData object
-            for (int i = 0; i < dependenciesKey.Count; i++)
-            {
-                jsonData.dependencies.Add(dependenciesKey[i], dependenciesValue[i]);
-            }
+        // Clear existing dependencies
+        jsonData.dependencies.Clear();
+
+        // Add new dependencies to jsonData object
+        for (int i = 0; i < dependenciesKey.Count; i++)
+        {
+            jsonData.dependencies.Add(dependenciesKey[i], dependenciesValue[i]);
+        }
+#endif
 
 
         // Save json string to file
-#if UNITY_2018_1_OR_NEWER
+#if UNITY_2018_1_OR_NEWER && !UNITY_2022
         string jsonString = JsonUtility.ToJson(jsonData, true);
 #endif
 
@@ -199,7 +207,10 @@ public class JsonEditorUtility : EditorWindow
         if (jsonData.name == null || jsonData.version == null || jsonData.displayName == null
             || jsonData.description == null || jsonData.unity == null || jsonData.unityRelease == null
             || jsonData.documentationUrl == null || jsonData.changelogUrl == null || jsonData.licensesUrl == null
-            || jsonData.keywords == null || jsonData.author == null)
+#if UNITY_2022_1_OR_NEWER
+            || jsonData.keywords == null || jsonData.author == null
+#endif
+            )
         {
             return false;
         }
