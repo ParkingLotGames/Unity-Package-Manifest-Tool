@@ -1,7 +1,9 @@
 using UnityEditor;
 using UnityEngine;
 using System.IO;
+#if UNITY_2022_1_OR_NEWER
 using Newtonsoft.Json;
+#endif
 using System.Collections.Generic;
 
 //TODO: Add buttons to remove keywords and dependencies individually.
@@ -53,8 +55,13 @@ public class CreateJsonFile
                 url = "https://www.unity3d.com"
             }
         };
+#if UNITY_2018_1_OR_NEWER
+        string jsonString = JsonUtility.ToJson(jsonData, true);
+#endif
 
+#if UNITY_2022_2_OR_NEWER
         string jsonString = JsonConvert.SerializeObject(jsonData, Formatting.Indented);
+#endif
         string filePath = EditorUtility.SaveFilePanel("Save JSON File", "Assets", "NewJsonFile.json", "json");
         File.WriteAllText(filePath, jsonString);
         AssetDatabase.Refresh();
@@ -86,7 +93,14 @@ public class JsonEditorUtility : EditorWindow
         if (GUILayout.Button("...", GUILayout.MaxWidth(24)))
         {
             jsonFilePath = EditorUtility.OpenFilePanel("Select JSON File", "", "json");
+
+#if UNITY_2018_1_OR_NEWER
+            jsonData = JsonUtility.FromJson<JsonData>(File.ReadAllText(jsonFilePath));
+#endif
+
+#if UNITY_2022_1_OR_NEWER
             jsonData = JsonConvert.DeserializeObject<JsonData>(File.ReadAllText(jsonFilePath));
+#endif
         }
         EditorGUILayout.EndHorizontal();
 
@@ -140,8 +154,13 @@ public class JsonEditorUtility : EditorWindow
     private void LoadJson()
     {
         string jsonString = File.ReadAllText(jsonFilePath);
-        jsonData = JsonConvert.DeserializeObject<JsonData>(jsonString);
+#if UNITY_2018_1_OR_NEWER
+        jsonData = JsonUtility.FromJson<JsonData>(File.ReadAllText(jsonString));
+#endif
 
+#if UNITY_2022_1_OR_NEWER
+            jsonData = JsonConvert.DeserializeObject<JsonData>(File.ReadAllText(jsonString));
+#endif
         if (!IsJsonValid())
         {
             jsonData = null;
@@ -161,8 +180,14 @@ public class JsonEditorUtility : EditorWindow
             }
 
 
-            // Save json string to file
+        // Save json string to file
+#if UNITY_2018_1_OR_NEWER
+        string jsonString = JsonUtility.ToJson(jsonData, true);
+#endif
+
+#if UNITY_2022_1_OR_NEWER
         string jsonString = JsonConvert.SerializeObject(jsonData, Formatting.Indented);
+#endif
         File.WriteAllText(jsonFilePath, jsonString);
         AssetDatabase.Refresh();
         EditorUtility.DisplayDialog("Success", "JSON file saved successfully.", "OK");
