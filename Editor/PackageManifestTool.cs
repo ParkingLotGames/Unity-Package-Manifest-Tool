@@ -5,8 +5,8 @@ using System.IO;
 using Newtonsoft.Json;
 #endif
 using System.Collections.Generic;
-
-//TODO: Add buttons to remove keywords and dependencies individually.
+// TODO: Add buttons to remove keywords and dependencies individually.
+// TODO: Open window after creating a new package.json
 public class JsonData
 {
     public string name;
