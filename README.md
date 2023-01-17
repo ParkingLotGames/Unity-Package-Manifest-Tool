@@ -1,7 +1,7 @@
 # Unity Package Manifest Tool
 #### 5.6.0+ Compatible
 ### An editor tool to create and modify JSON files for your Unity Packages.
-
+![previe](https://github.com/ParkingLotGames/Unity-Package-Manifest-Tool/blob/main/preview.png)
 In 2021+ it uses the Newtonsoft.Json library to add Author and Dependency keys
 
 # Usage
