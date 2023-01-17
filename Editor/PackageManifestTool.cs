@@ -6,8 +6,9 @@ using Newtonsoft.Json;
 #endif
 using System.Collections.Generic;
 
-//TODO: Add buttons to remove keywords and dependencies individually.
-public class JsonData
+// TODO: Consider adding buttons to remove keywords individually (convert keywords to List).
+
+public class PackageManifestData
 {
     public string name;
     public string version;
@@ -31,12 +32,12 @@ public class JsonData
 #endif
 }
 
-public class CreateJsonFile
+public class CreatePackageManifestFile
 {
-    [MenuItem("Assets/Create/JSON File")]
+    [MenuItem("Assets/Create/Package Manifest", priority = 1)]
     static void CreateJson()
     {
-        JsonData jsonData = new JsonData()
+        PackageManifestData packageManifestData = new PackageManifestData()
         {
             name = "com.[company-name].[package-name]",
             version = "1.2.3",
@@ -50,7 +51,7 @@ public class CreateJsonFile
             keywords = new string[] { "keyword1", "keyword2", "keyword3" },
 #if UNITY_2022_1_OR_NEWER
             dependencies = new Dictionary<string, string>(),
-            author = new JsonData.Author()
+            author = new PackageManifestData.Author()
             {
                 name = "Unity",
                 email = "unity@example.com",
@@ -58,28 +59,32 @@ public class CreateJsonFile
             }
 #endif
         };
-#if UNITY_2018_1_OR_NEWER && !UNITY_2022
-        string jsonString = JsonUtility.ToJson(jsonData, true);
+#if UNITY_5_6_OR_NEWER && !UNITY_2022
+        string jsonString = JsonUtility.ToJson(packageManifestData, true);
 #endif
 
 #if UNITY_2022_2_OR_NEWER
-        string jsonString = JsonConvert.SerializeObject(jsonData, Formatting.Indented);
+        string jsonString = JsonConvert.SerializeObject(packageManifestData, Formatting.Indented);
 #endif
-        string filePath = EditorUtility.SaveFilePanel("Save JSON File", "Assets", "NewJsonFile.json", "json");
+        string filePath = EditorUtility.SaveFilePanel("Save package.json", "Assets", "package.json", "json");
         File.WriteAllText(filePath, jsonString);
+        Debug.Log(filePath);
         AssetDatabase.Refresh();
+        PackageManifestEditorUtility window = (PackageManifestEditorUtility)EditorWindow.GetWindow(typeof(PackageManifestEditorUtility));
+        window.packageManifestData = JsonUtility.FromJson<PackageManifestData>(File.ReadAllText(filePath));
+        window.jsonFilePath = filePath;
     }
 }
 
-public class JsonEditorUtility : EditorWindow
+public class PackageManifestEditorUtility : EditorWindow
 {
-    private string jsonFilePath;
-    private JsonData jsonData;
+    public string jsonFilePath;
+    public PackageManifestData packageManifestData;
 
     [MenuItem("Tools/Package Manifest Tool")]
-    static void ShowWindow()
+    public static void ShowWindow()
     {
-        var window = GetWindow<JsonEditorUtility>("Package Manifest Tool");
+        var window = GetWindow<PackageManifestEditorUtility>("Package Manifest Tool");
         window.Show();
     }
 
@@ -91,63 +96,68 @@ public class JsonEditorUtility : EditorWindow
     {
         EditorGUILayout.BeginHorizontal();
         EditorGUI.BeginDisabledGroup(true);
-        jsonFilePath = EditorGUILayout.TextField("JSON File Path", jsonFilePath);
+        jsonFilePath = EditorGUILayout.TextField("Package Manifest Path", jsonFilePath);
         EditorGUI.EndDisabledGroup();
         if (GUILayout.Button("...", GUILayout.MaxWidth(24)))
         {
-            jsonFilePath = EditorUtility.OpenFilePanel("Select JSON File", "", "json");
+            jsonFilePath = EditorUtility.OpenFilePanel("Select Package Manifest", "", "json");
 
-#if UNITY_2018_1_OR_NEWER && !UNITY_2022
-            jsonData = JsonUtility.FromJson<JsonData>(File.ReadAllText(jsonFilePath));
+#if UNITY_5_6_OR_NEWER && !UNITY_2022
+            packageManifestData = JsonUtility.FromJson<PackageManifestData>(File.ReadAllText(jsonFilePath));
 #endif
 
 #if UNITY_2022_1_OR_NEWER
-            jsonData = JsonConvert.DeserializeObject<JsonData>(File.ReadAllText(jsonFilePath));
+            packageManifestData = JsonConvert.DeserializeObject<PackageManifestData>(File.ReadAllText(jsonFilePath));
 #endif
         }
         EditorGUILayout.EndHorizontal();
 
-        if (jsonData != null)
+        if (packageManifestData != null)
         {
-            jsonData.name = EditorGUILayout.TextField("Name", jsonData.name);
-            jsonData.version = EditorGUILayout.TextField("Version", jsonData.version);
-            jsonData.displayName = EditorGUILayout.TextField("Display Name", jsonData.displayName);
-            jsonData.description = EditorGUILayout.TextField("Description", jsonData.description);
-            jsonData.unity = EditorGUILayout.TextField("Unity", jsonData.unity);
-            jsonData.unityRelease = EditorGUILayout.TextField("Unity Release", jsonData.unityRelease);
-            jsonData.documentationUrl = EditorGUILayout.TextField("Documentation URL", jsonData.documentationUrl);
-            jsonData.changelogUrl = EditorGUILayout.TextField("Changelog URL", jsonData.changelogUrl);
-            jsonData.licensesUrl = EditorGUILayout.TextField("Licensing URL", jsonData.licensesUrl);
+            packageManifestData.name = EditorGUILayout.TextField("Name", packageManifestData.name);
+            packageManifestData.version = EditorGUILayout.TextField("Version", packageManifestData.version);
+            packageManifestData.displayName = EditorGUILayout.TextField("Display Name", packageManifestData.displayName);
+            packageManifestData.description = EditorGUILayout.TextField("Description", packageManifestData.description);
+            packageManifestData.unity = EditorGUILayout.TextField("Unity", packageManifestData.unity);
+            packageManifestData.unityRelease = EditorGUILayout.TextField("Unity Release", packageManifestData.unityRelease);
+            packageManifestData.documentationUrl = EditorGUILayout.TextField("Documentation URL", packageManifestData.documentationUrl);
+            packageManifestData.changelogUrl = EditorGUILayout.TextField("Changelog URL", packageManifestData.changelogUrl);
+            packageManifestData.licensesUrl = EditorGUILayout.TextField("Licensing URL", packageManifestData.licensesUrl);
 
 #if UNITY_2022_1_OR_NEWER
-
             EditorGUILayout.LabelField("Dependencies");
-            // Add a new dependency button
+            // Show the current dependencies
+            for (int i = 0; i < dependenciesKey.Count; i++)
+            {
+                GUILayout.BeginHorizontal();
+                dependenciesKey[i] = EditorGUILayout.TextField("Dependency Name & Version", dependenciesKey[i]);
+                dependenciesValue[i] = EditorGUILayout.TextField(dependenciesValue[i], GUILayout.MaxWidth(40));
+                if (GUILayout.Button("Remove", GUILayout.Width(60)))
+                {
+                    dependenciesKey.RemoveAt(i);
+                    dependenciesValue.RemoveAt(i);
+                }
+                GUILayout.EndHorizontal();
+            }
+
+            // Add Dependency Button
             if (GUILayout.Button("Add Dependency"))
             {
                 dependenciesKey.Add("com.[company-name].dependency");
                 dependenciesValue.Add("1.0.0");
             }
 
-            // Show the current dependencies
-            for (int i = 0; i < dependenciesKey.Count; i++)
-            {
-                GUILayout.BeginHorizontal();
-                dependenciesKey[i] = EditorGUILayout.TextField("Dependency Name", dependenciesKey[i]);
-                dependenciesValue[i] = EditorGUILayout.TextField("Version", dependenciesValue[i]);
-                GUILayout.EndHorizontal();
-            }
 #endif
             EditorGUILayout.LabelField("Keywords");
-            for (int i = 0; i < jsonData.keywords.Length; i++)
+            for (int i = 0; i < packageManifestData.keywords.Length; i++)
             {
-                jsonData.keywords[i] = EditorGUILayout.TextField("Keyword " + (i + 1), jsonData.keywords[i]);
+                packageManifestData.keywords[i] = EditorGUILayout.TextField("Keyword " + (i + 1), packageManifestData.keywords[i]);
             }
 #if UNITY_2022_1_OR_NEWER
             EditorGUILayout.LabelField("Author");
-            jsonData.author.name = EditorGUILayout.TextField("Name", jsonData.author.name);
-            jsonData.author.email = EditorGUILayout.TextField("Email", jsonData.author.email);
-            jsonData.author.url = EditorGUILayout.TextField("URL", jsonData.author.url);
+            packageManifestData.author.name = EditorGUILayout.TextField("Name", packageManifestData.author.name);
+            packageManifestData.author.email = EditorGUILayout.TextField("Email", packageManifestData.author.email);
+            packageManifestData.author.url = EditorGUILayout.TextField("URL", packageManifestData.author.url);
 #endif
             if (GUILayout.Button("Save JSON"))
             {
@@ -156,20 +166,20 @@ public class JsonEditorUtility : EditorWindow
         }
     }
 
-    private void LoadJson()
+    public void LoadJson()
     {
         string jsonString = File.ReadAllText(jsonFilePath);
-#if UNITY_2018_1_OR_NEWER && !UNITY_2022
-        jsonData = JsonUtility.FromJson<JsonData>(File.ReadAllText(jsonString));
+#if UNITY_5_6_OR_NEWER && !UNITY_2022
+        packageManifestData = JsonUtility.FromJson<PackageManifestData>(File.ReadAllText(jsonString));
 #endif
 
 #if UNITY_2022_1_OR_NEWER
-            jsonData = JsonConvert.DeserializeObject<JsonData>(File.ReadAllText(jsonString));
+            packageManifestData = JsonConvert.DeserializeObject<PackageManifestData>(File.ReadAllText(jsonString));
 #endif
         if (!IsJsonValid())
         {
-            jsonData = null;
-            EditorUtility.DisplayDialog("Error", "Invalid JSON file format.", "OK");
+            packageManifestData = null;
+            EditorUtility.DisplayDialog("Error", "Invalid Package Manifest format.", "OK");
         }
     }
 
@@ -178,37 +188,37 @@ public class JsonEditorUtility : EditorWindow
 #if UNITY_2022_1_OR_NEWER
 
         // Clear existing dependencies
-        jsonData.dependencies.Clear();
+        packageManifestData.dependencies.Clear();
 
-        // Add new dependencies to jsonData object
+        // Add new dependencies to packageManifestData object
         for (int i = 0; i < dependenciesKey.Count; i++)
         {
-            jsonData.dependencies.Add(dependenciesKey[i], dependenciesValue[i]);
+            packageManifestData.dependencies.Add(dependenciesKey[i], dependenciesValue[i]);
         }
 #endif
 
 
         // Save json string to file
-#if UNITY_2018_1_OR_NEWER && !UNITY_2022
-        string jsonString = JsonUtility.ToJson(jsonData, true);
+#if UNITY_5_6_OR_NEWER && !UNITY_2022
+        string jsonString = JsonUtility.ToJson(packageManifestData, true);
 #endif
 
 #if UNITY_2022_1_OR_NEWER
-        string jsonString = JsonConvert.SerializeObject(jsonData, Formatting.Indented);
+        string jsonString = JsonConvert.SerializeObject(packageManifestData, Formatting.Indented);
 #endif
         File.WriteAllText(jsonFilePath, jsonString);
         AssetDatabase.Refresh();
-        EditorUtility.DisplayDialog("Success", "JSON file saved successfully.", "OK");
+        EditorUtility.DisplayDialog("Success", "Package Manifest saved successfully.", "OK");
     }
 
     private bool IsJsonValid()
     {
-        // Check if jsonData contains all the required properties
-        if (jsonData.name == null || jsonData.version == null || jsonData.displayName == null
-            || jsonData.description == null || jsonData.unity == null || jsonData.unityRelease == null
-            || jsonData.documentationUrl == null || jsonData.changelogUrl == null || jsonData.licensesUrl == null
+        // Check if packageManifestData contains all the required properties
+        if (packageManifestData.name == null || packageManifestData.version == null || packageManifestData.displayName == null
+            || packageManifestData.description == null || packageManifestData.unity == null || packageManifestData.unityRelease == null
+            || packageManifestData.documentationUrl == null || packageManifestData.changelogUrl == null || packageManifestData.licensesUrl == null
 #if UNITY_2022_1_OR_NEWER
-            || jsonData.keywords == null || jsonData.author == null
+            || packageManifestData.keywords == null || packageManifestData.author == null
 #endif
             )
         {
