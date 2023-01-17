@@ -1,6 +1,6 @@
 {
   "name": "com.parkinglotgames.packagemanifesttool",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "displayName": "Package Manifest Tool",
   "description": "An editor tool to create and modify JSON files for your Unity Packages.",
   "unity": "2017.1",
