@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 using System.IO;
-#if UNITY_2021_1_OR_NEWER
+#if UNITY_2020_1_OR_NEWER
 using Newtonsoft.Json;
 #endif
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ public class PackageManifestData
     public string changelogUrl;
     public string licensesUrl;
     public string[] keywords;
-#if UNITY_2021_1_OR_NEWER
+#if UNITY_2020_1_OR_NEWER
     public Dictionary<string, string> dependencies;
     public Author author;
     public class Author
@@ -47,9 +47,9 @@ public class CreatePackageManifestFile
             unityRelease = "0b5",
             documentationUrl = "https://example.com/",
             changelogUrl = "https://example.com/changelog.html",
-            licensesUrl = "https://example.com/licensing.html",
+            licensesUrl = "https://example.com/licenses.html",
             keywords = new string[] { "keyword1", "keyword2", "keyword3" },
-#if UNITY_2021_1_OR_NEWER
+#if UNITY_2020_1_OR_NEWER
             dependencies = new Dictionary<string, string>(),
             author = new PackageManifestData.Author()
             {
@@ -59,11 +59,11 @@ public class CreatePackageManifestFile
             }
 #endif
         };
-#if !UNITY_2021_1_OR_NEWER
+#if !UNITY_2020_1_OR_NEWER
         string jsonString = JsonUtility.ToJson(packageManifestData, true);
 #endif
 
-#if UNITY_2021_1_OR_NEWER
+#if UNITY_2020_1_OR_NEWER
         string jsonString = JsonConvert.SerializeObject(packageManifestData, Formatting.Indented);
 #endif
         string filePath = EditorUtility.SaveFilePanel("Save package.json", "Assets", "package.json", "json");
@@ -102,11 +102,11 @@ public class PackageManifestEditorUtility : EditorWindow
         {
             jsonFilePath = EditorUtility.OpenFilePanel("Select Package Manifest", "", "json");
 
-#if !UNITY_2021_1_OR_NEWER
+#if !UNITY_2020_1_OR_NEWER
             packageManifestData = JsonUtility.FromJson<PackageManifestData>(File.ReadAllText(jsonFilePath));
 #endif
 
-#if UNITY_2021_1_OR_NEWER
+#if UNITY_2020_1_OR_NEWER
             packageManifestData = JsonConvert.DeserializeObject<PackageManifestData>(File.ReadAllText(jsonFilePath));
 #endif
         }
@@ -122,9 +122,9 @@ public class PackageManifestEditorUtility : EditorWindow
             packageManifestData.unityRelease = EditorGUILayout.TextField("Unity Release", packageManifestData.unityRelease);
             packageManifestData.documentationUrl = EditorGUILayout.TextField("Documentation URL", packageManifestData.documentationUrl);
             packageManifestData.changelogUrl = EditorGUILayout.TextField("Changelog URL", packageManifestData.changelogUrl);
-            packageManifestData.licensesUrl = EditorGUILayout.TextField("Licensing URL", packageManifestData.licensesUrl);
+            packageManifestData.licensesUrl = EditorGUILayout.TextField("Licenses URL", packageManifestData.licensesUrl);
 
-#if UNITY_2021_1_OR_NEWER
+#if UNITY_2020_1_OR_NEWER
             EditorGUILayout.LabelField("Dependencies");
             // Show the current dependencies
             for (int i = 0; i < dependenciesKey.Count; i++)
@@ -153,7 +153,7 @@ public class PackageManifestEditorUtility : EditorWindow
             {
                 packageManifestData.keywords[i] = EditorGUILayout.TextField("Keyword " + (i + 1), packageManifestData.keywords[i]);
             }
-#if UNITY_2021_1_OR_NEWER
+#if UNITY_2020_1_OR_NEWER
             EditorGUILayout.LabelField("Author");
             packageManifestData.author.name = EditorGUILayout.TextField("Name", packageManifestData.author.name);
             packageManifestData.author.email = EditorGUILayout.TextField("Email", packageManifestData.author.email);
@@ -168,11 +168,11 @@ public class PackageManifestEditorUtility : EditorWindow
 
     public void LoadJson()
     {
-#if !UNITY_2021_1_OR_NEWER
+#if !UNITY_2020_1_OR_NEWER
         packageManifestData = JsonUtility.FromJson<PackageManifestData>(File.ReadAllText(jsonFilePath));
 #endif
 
-#if UNITY_2021_1_OR_NEWER
+#if UNITY_2020_1_OR_NEWER
             packageManifestData = JsonConvert.DeserializeObject<PackageManifestData>(File.ReadAllText(jsonFilePath));
 #endif
         if (!IsJsonValid())
@@ -184,7 +184,7 @@ public class PackageManifestEditorUtility : EditorWindow
 
     private void SaveJson()
     {
-#if UNITY_2021_1_OR_NEWER
+#if UNITY_2020_1_OR_NEWER
 
         // Clear existing dependencies
         packageManifestData.dependencies.Clear();
@@ -198,11 +198,11 @@ public class PackageManifestEditorUtility : EditorWindow
 
 
         // Save json string to file
-#if !UNITY_2021_1_OR_NEWER
+#if !UNITY_2020_1_OR_NEWER
         string jsonString = JsonUtility.ToJson(packageManifestData, true);
 #endif
 
-#if UNITY_2021_1_OR_NEWER
+#if UNITY_2020_1_OR_NEWER
         string jsonString = JsonConvert.SerializeObject(packageManifestData, Formatting.Indented);
 #endif
         File.WriteAllText(jsonFilePath, jsonString);
@@ -216,7 +216,7 @@ public class PackageManifestEditorUtility : EditorWindow
         if (packageManifestData.name == null || packageManifestData.version == null || packageManifestData.displayName == null
             || packageManifestData.description == null || packageManifestData.unity == null || packageManifestData.unityRelease == null
             || packageManifestData.documentationUrl == null || packageManifestData.changelogUrl == null || packageManifestData.licensesUrl == null
-#if UNITY_2021_1_OR_NEWER
+#if UNITY_2020_1_OR_NEWER
             || packageManifestData.keywords == null || packageManifestData.author == null
 #endif
             )
