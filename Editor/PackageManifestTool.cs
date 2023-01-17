@@ -59,7 +59,7 @@ public class CreatePackageManifestFile
             }
 #endif
         };
-#if UNITY_2018_1_OR_NEWER && !UNITY_2022
+#if UNITY_5_6_OR_NEWER && !UNITY_2022
         string jsonString = JsonUtility.ToJson(packageManifestData, true);
 #endif
 
@@ -102,7 +102,7 @@ public class PackageManifestEditorUtility : EditorWindow
         {
             jsonFilePath = EditorUtility.OpenFilePanel("Select Package Manifest", "", "json");
 
-#if UNITY_2018_1_OR_NEWER && !UNITY_2022
+#if UNITY_5_6_OR_NEWER && !UNITY_2022
             packageManifestData = JsonUtility.FromJson<PackageManifestData>(File.ReadAllText(jsonFilePath));
 #endif
 
@@ -169,7 +169,7 @@ public class PackageManifestEditorUtility : EditorWindow
     public void LoadJson()
     {
         string jsonString = File.ReadAllText(jsonFilePath);
-#if UNITY_2018_1_OR_NEWER && !UNITY_2022
+#if UNITY_5_6_OR_NEWER && !UNITY_2022
         packageManifestData = JsonUtility.FromJson<PackageManifestData>(File.ReadAllText(jsonString));
 #endif
 
@@ -199,7 +199,7 @@ public class PackageManifestEditorUtility : EditorWindow
 
 
         // Save json string to file
-#if UNITY_2018_1_OR_NEWER && !UNITY_2022
+#if UNITY_5_6_OR_NEWER && !UNITY_2022
         string jsonString = JsonUtility.ToJson(packageManifestData, true);
 #endif
 
