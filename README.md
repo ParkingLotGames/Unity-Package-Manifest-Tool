@@ -1,5 +1,5 @@
 # Unity Package Manifest Tool
-![GitHub](https://img.shields.io/github/license/ParkingLotGames/Unity-Lossless-Renderer?style=plastic)
+![GitHub](https://img.shields.io/github/license/ParkingLotGames/Unity-Lossless-Renderer?style=plastic) ![GitHub repo size](https://img.shields.io/github/repo-size/ParkingLotGames/Unity-Lossless-Renderer)
 #### 5.6.0+ Compatible
 ### An editor tool to create and modify JSON files for your Unity Packages.
 ![previe](https://github.com/ParkingLotGames/Unity-Package-Manifest-Tool/blob/main/preview.png)
