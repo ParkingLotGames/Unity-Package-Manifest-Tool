@@ -5,7 +5,6 @@
 
 ![Issues](https://img.shields.io/github/issues-raw/ParkingLotGames/Unity-Lossless-Renderer?style=plastic) ![Pull requests](https://img.shields.io/github/issues-pr-raw/ParkingLotGames/Unity-Lossless-Renderer?style=plastic)
 
-#### 5.6.0+ Compatible
 ### An editor tool to create and modify JSON files for your Unity Packages.
 ![previe](https://github.com/ParkingLotGames/Unity-Package-Manifest-Tool/blob/main/preview.png)
 In 2021+ it uses the Newtonsoft.Json library to add Author and Dependency keys
