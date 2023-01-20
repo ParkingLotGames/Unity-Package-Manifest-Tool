@@ -1,9 +1,9 @@
 # Unity Package Manifest Tool
-![Unity Version](https://img.shields.io/badge/Unity-5.6%2B-blue?style=plastic) ![License](https://img.shields.io/github/license/ParkingLotGames/Unity-Lossless-Renderer?style=plastic) ![Size](https://img.shields.io/github/repo-size/ParkingLotGames/Unity-Lossless-Renderer?style=plastic) ![package.json version (branch)](https://img.shields.io/github/package-json/v/ParkingLotGames/Unity-Lossless-Renderer/main?style=plastic) ![Last commit](https://img.shields.io/github/last-commit/ParkingLotGames/Unity-Lossless-Renderer?style=plastic)
+![Unity Version](https://img.shields.io/badge/Unity-5.6%2B-blue?style=plastic) ![License](https://img.shields.io/github/license/ParkingLotGames/Unity-Package-Manifest-Tool?style=plastic) ![Size](https://img.shields.io/github/repo-size/ParkingLotGames/Unity-Package-Manifest-Tool?style=plastic) ![package.json version (branch)](https://img.shields.io/github/package-json/v/ParkingLotGames/Unity-Package-Manifest-Tool/main?style=plastic) ![Last commit](https://img.shields.io/github/last-commit/ParkingLotGames/Unity-Package-Manifest-Tool?style=plastic)
 
-![package.json dynamic](https://img.shields.io/github/package-json/keywords/ParkingLotGames/Unity-Lossless-Renderer?style=plastic)
+![package.json dynamic](https://img.shields.io/github/package-json/keywords/ParkingLotGames/Unity-Package-Manifest-Tool?style=plastic)
 
-![Issues](https://img.shields.io/github/issues-raw/ParkingLotGames/Unity-Lossless-Renderer?style=plastic) ![Pull requests](https://img.shields.io/github/issues-pr-raw/ParkingLotGames/Unity-Lossless-Renderer?style=plastic)
+![Issues](https://img.shields.io/github/issues-raw/ParkingLotGames/Unity-Package-Manifest-Tool?style=plastic) ![Pull requests](https://img.shields.io/github/issues-pr-raw/ParkingLotGames/Unity-Package-Manifest-Tool?style=plastic)
 
 ### An editor tool to create and modify JSON files for your Unity Packages.
 ![previe](https://github.com/ParkingLotGames/Unity-Package-Manifest-Tool/blob/main/preview.png)
