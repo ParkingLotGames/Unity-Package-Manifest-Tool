@@ -1,5 +1,8 @@
 # Unity Package Manifest Tool
-![GitHub](https://img.shields.io/github/license/ParkingLotGames/Unity-Lossless-Renderer?style=plastic) ![GitHub repo size](https://img.shields.io/github/repo-size/ParkingLotGames/Unity-Lossless-Renderer?style=plastic) ![GitHub last commit](https://img.shields.io/github/last-commit/ParkingLotGames/Unity-Lossless-Renderer?style=plastic) ![GitHub issues](https://img.shields.io/github/issues-raw/ParkingLotGames/Unity-Lossless-Renderer?style=plastic)
+![GitHub](https://img.shields.io/github/license/ParkingLotGames/Unity-Lossless-Renderer?style=plastic) ![GitHub repo size](https://img.shields.io/github/repo-size/ParkingLotGames/Unity-Lossless-Renderer?style=plastic) ![GitHub package.json version (branch)](https://img.shields.io/github/package-json/v/ParkingLotGames/Unity-Lossless-Renderer/main) ![GitHub last commit](https://img.shields.io/github/last-commit/ParkingLotGames/Unity-Lossless-Renderer?style=plastic)
+![GitHub package.json dynamic](https://img.shields.io/github/package-json/keywords/ParkingLotGames/Unity-Lossless-Renderer)
+![GitHub issues](https://img.shields.io/github/issues-raw/ParkingLotGames/Unity-Lossless-Renderer?style=plastic) ![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/ParkingLotGames/Unity-Lossless-Renderer?style=plastic)
+
 #### 5.6.0+ Compatible
 ### An editor tool to create and modify JSON files for your Unity Packages.
 ![previe](https://github.com/ParkingLotGames/Unity-Package-Manifest-Tool/blob/main/preview.png)
